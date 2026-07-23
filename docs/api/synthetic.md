@@ -1,0 +1,3 @@
+# Synthetic data
+
+::: crowdgp.synthetic

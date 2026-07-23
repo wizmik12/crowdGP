@@ -17,7 +17,7 @@ denoises the label matrix: it has nothing to say about an item no one has
 annotated. Here the ground-truth posterior is coupled to a sparse variational
 GP over the item *features*, so the fitted classifier generalises to
 unannotated data -- the payoff for the extra modelling effort, and the thing
-[`examples/`](examples/) is built to check for.
+the [examples](examples.md) are built to check for.
 
 ## Install
 
@@ -62,7 +62,7 @@ model.infer_true_labels(data.X, labels)     # denoised labels for the annotated 
 model.predict_class_probs(new_X)            # predictions for items no one has annotated
 ```
 
-See [`examples/`](examples/) for complete, runnable scripts, including a
+See [Examples](examples.md) for complete, runnable scripts, including a
 sanity check that the fitted model beats plain majority vote, and a plotting
 script for the ELBO decomposition and confusion-matrix recovery.
 
@@ -76,11 +76,11 @@ change to the core engine.
 
 | Component | Abstract base | Job | Shipped implementations |
 |---|---|---|---|
-| Latent classifier | [`LatentFunction`](src/crowdgp/latent/base.py) | maps item features to per-class evidence | [`SVGPLatent`](src/crowdgp/latent/svgp.py) (sparse variational multi-class GP) |
-| Annotator model | [`AnnotatorModel`](src/crowdgp/annotators/base.py) | describes each worker's labelling noise | [`VariationalDirichletAnnotator`](src/crowdgp/annotators/strategies.py), `SoftmaxPointAnnotator`, `OneCoinAnnotator` |
-| Ground-truth posterior | [`PosteriorZ`](src/crowdgp/posteriors.py) | combines both evidence streams into `q(z_n = c)` | [`FreeCategoricalZ`](src/crowdgp/posteriors.py) |
+| Latent classifier | [`LatentFunction`](api/latent.md) | maps item features to per-class evidence | [`SVGPLatent`](api/latent.md) (sparse variational multi-class GP) |
+| Annotator model | [`AnnotatorModel`](api/annotators.md) | describes each worker's labelling noise | [`VariationalDirichletAnnotator`, `SoftmaxPointAnnotator`, `OneCoinAnnotator`](api/annotators.md) |
+| Ground-truth posterior | [`PosteriorZ`](api/posteriors.md) | combines both evidence streams into `q(z_n = c)` | [`FreeCategoricalZ`](api/posteriors.md) |
 
-`GPCrowdModel.elbo_terms` (in [`models.py`](src/crowdgp/models.py)) is the
+`GPCrowdModel.elbo_terms` (in the [model reference](api/models.md)) is the
 entire core engine: ask the latent function what the features imply, ask the
 annotator what the workers imply, ask `q(Z)` to combine them, weight and add.
 Everything else is in the strategies.
@@ -90,36 +90,13 @@ its contract -- e.g. a new `AnnotatorModel` need only implement
 `label_log_terms` (per-annotation expected log-likelihood under each
 candidate true class) and `kl_divergence`; the aggregation onto items, the
 ELBO term, and the interaction with `q(Z)` are all handled generically by the
-base class. See the docstrings in `annotators/base.py` and `latent/base.py`
-for the full contract and the reasoning behind its shape.
+base class. See the [API reference](api/index.md) for the full contract and
+the reasoning behind its shape.
 
-Data flows through the library as sparse `(item, worker, label)` triples via
-[`CrowdLabels`](src/crowdgp/data.py) -- see its module docstring for why COO
-storage and structural batch alignment were chosen over a dense label matrix.
-
-## Theory
-
-**[`docs/theory.md`](docs/theory.md)** derives the full generative model and
-the evidence lower bound this library optimises -- the sparse variational
-multi-class GP, the robust-max link and its Gaussian-quadrature expectation,
-the three annotator confusion-matrix models (including the Dirichlet KL and
-posterior-mean formulas), and the variational posterior over ground truth --
-with every term tied to the line of code that computes it. Read it before
-changing modelling code or adding a new strategy.
-
-## Documentation site
-
-The same theory, an auto-generated API reference, and the examples are also
-published as a browsable site (MkDocs + Material,
-[`mkdocs.yml`](mkdocs.yml)), built and deployed to GitHub Pages by
-[`.github/workflows/docs.yml`](.github/workflows/docs.yml) on every push to
-`main`. To build it locally:
-
-```bash
-pip install -e ".[docs]"
-mkdocs serve       # live preview at http://127.0.0.1:8000
-mkdocs build        # static site in site/
-```
+**[Theory](theory.md)** derives the full generative model and the evidence
+lower bound this library optimises, with every term tied to the line of code
+that computes it. Read it before changing modelling code or adding a new
+strategy.
 
 ## Testing
 
@@ -130,6 +107,4 @@ pytest                  # + end-to-end training tests that verify the model
                         # confusion matrices, ~2 minutes
 ```
 
-`src/crowdgp/tests/test_end_to_end.py` is the test module to read first if
-you are changing modelling code: unlike the unit tests, it checks properties
-that no amount of correct-looking code guarantees on its own.
+Source: [github.com/wizmik12/crowdGP](https://github.com/wizmik12/crowdGP)

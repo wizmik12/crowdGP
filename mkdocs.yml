@@ -1,0 +1,79 @@
+site_name: crowdgp
+site_description: Gaussian-process models for learning from crowds
+repo_url: https://github.com/wizmik12/crowdGP
+repo_name: wizmik12/crowdGP
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - navigation.instant
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.action.edit
+
+nav:
+  - Home: index.md
+  - Theory: theory.md
+  - Examples: examples.md
+  - API reference:
+      - Overview: api/index.md
+      - Data (CrowdLabels): api/data.md
+      - Model (GPCrowdModel): api/models.md
+      - Latent classifier: api/latent.md
+      - Annotator strategies: api/annotators.md
+      - Ground-truth posterior: api/posteriors.md
+      - Training: api/inference.md
+      - Synthetic data: api/synthetic.md
+
+markdown_extensions:
+  - admonition
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            docstring_style: google
+            docstring_section_style: table
+            show_root_heading: true
+            show_root_full_path: false
+            show_source: true
+            merge_init_into_class: true
+            heading_level: 2
+            members_order: source
+            show_signature_annotations: true
+            separate_signature: true
