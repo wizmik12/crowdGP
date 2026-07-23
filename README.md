@@ -1,5 +1,9 @@
 # crowdgp
 
+[![License: Apache 2.0](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](pyproject.toml)
+[![Status: research, active development](https://img.shields.io/badge/status-research%20%2F%20active%20development-orange.svg)](#status)
+
 Gaussian-process models for learning from crowds: fitting a classifier from
 noisy, incomplete crowdsourced annotations instead of clean labels, jointly
 with a model of each annotator's reliability.
@@ -9,6 +13,16 @@ The default configuration reproduces **SVGPCR**:
 > Morales-Álvarez, P., Ruiz, P., Coughlin, S., Molina, R., & Katsaggelos, A. K.
 > (2022). *Scalable Variational Gaussian Processes for Crowdsourcing: Glitch
 > Detection in LIGO.* IEEE TPAMI, 44(3), 1534-1551.
+
+## Status
+
+Research code under active development, released alongside ongoing work from
+the authors' group. The public API (`crowdgp.*`, see [Architecture](#architecture))
+is reasonably stable, but interfaces can still change between versions ahead
+of a first tagged release -- pin a commit if you depend on it for a
+publication. Issues and pull requests are welcome. A citation entry
+(BibTeX / paper reference) will be added here once the accompanying
+publication is available.
 
 ## Why a GP, and not just a confusion-matrix model
 
@@ -133,3 +147,11 @@ pytest                  # + end-to-end training tests that verify the model
 `src/crowdgp/tests/test_end_to_end.py` is the test module to read first if
 you are changing modelling code: unlike the unit tests, it checks properties
 that no amount of correct-looking code guarantees on its own.
+
+## License
+
+Licensed under the [Apache License, Version 2.0](LICENSE) -- permissive,
+patent-granting, and the same license used by TensorFlow and GPflow, which
+this library depends on. You may use, modify, and redistribute this code,
+including commercially, provided you retain the copyright and license
+notices; see the [LICENSE](LICENSE) file for the full text.
