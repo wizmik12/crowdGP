@@ -1,7 +1,7 @@
 """Concrete annotator strategies.
 
 Three interchangeable worker-noise models, all satisfying the
-:class:`~crowdgp.annotators.base.AnnotatorModel` object. The core engine
+[AnnotatorModel][crowdgp.annotators.base.AnnotatorModel] object. The core engine
 never learns which one it holds, so adding a fourth requires no change
 anywhere else in the library.
 
@@ -15,7 +15,7 @@ SoftmaxPointAnnotator         ``A * C * C``       none (point estimate)
 OneCoinAnnotator              ``A``               none (point estimate)
 ============================  ==================  ==============================
 
-:class:`OneCoinAnnotator` is the one that justifies the shape of the base
+[OneCoinAnnotator][crowdgp.annotators.strategies.OneCoinAnnotator] is the one that justifies the shape of the base
 class. It carries a single scalar per worker, so an interface promising an
 ``[A, C, C]`` parameter tensor would have been the wrong abstraction -- it
 happens to *build* such a tensor, but it does not store one.
@@ -91,7 +91,7 @@ class VariationalDirichletAnnotator(ConfusionAnnotator):
                 Dirichlet -- no prior opinion about any worker.
             alpha_tilde_init: Optional ``[A, C, C]`` starting point. Defaults to
                 a mild diagonal bias, encoding the assumption that workers are
-                better than chance. See :func:`init_alpha_tilde` for the
+                better than chance. See [init_alpha_tilde][crowdgp.annotators.strategies.init_alpha_tilde] for the
                 data-driven alternative, which converges considerably faster.
 
         Note:
@@ -203,7 +203,7 @@ class SoftmaxPointAnnotator(ConfusionAnnotator):
 
         Note:
             No constraint transform is needed: the softmax in
-            :meth:`expected_log_confusion` handles normalisation, so the raw
+            [expected_log_confusion][crowdgp.annotators.base.ConfusionAnnotator.expected_log_confusion] handles normalisation, so the raw
             logits are free parameters over all of R.
         """
         super().__init__(num_workers, num_classes)
@@ -233,7 +233,7 @@ class SoftmaxPointAnnotator(ConfusionAnnotator):
         """Exact confusion matrices, ``softmax(logits)``.
 
         No expectation is involved, so unlike the Dirichlet case this really is
-        the exponential of :meth:`expected_log_confusion`.
+        the exponential of [expected_log_confusion][crowdgp.annotators.base.ConfusionAnnotator.expected_log_confusion].
 
         Returns:
             tf.Tensor: Shape ``[A, C_obs, C_true]``, columns summing to 1.
@@ -277,7 +277,7 @@ class OneCoinAnnotator(ConfusionAnnotator):
                 divided by zero), or if ``init_accuracy`` is not in ``(0, 1)``.
 
         Note:
-            Stored as a logit with the sigmoid applied in :attr:`beta`, rather
+            Stored as a logit with the sigmoid applied in [beta][crowdgp.annotators.strategies.OneCoinAnnotator.beta], rather
             than as a constrained ``Parameter``. Both work; the logit keeps the
             dependency surface small and makes the unconstrained optimisation
             explicit at the point of use.
@@ -351,7 +351,7 @@ def init_alpha_tilde(
     Args:
         labels: The annotations.
         class_probs: Soft per-item class assignments ``[N, C]``, typically
-            :meth:`~crowdgp.data.CrowdLabels.empirical_class_probs`.
+            [empirical_class_probs][crowdgp.data.CrowdLabels.empirical_class_probs].
         prior_strength: Constant added to every entry, keeping concentrations
             comfortably positive and the digamma well conditioned.
 

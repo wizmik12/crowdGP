@@ -7,12 +7,11 @@ and is the part of the model that generalizes to new items.
 
 Shape
 --------------
-:meth:`LatentFunction.expected_log_p_z` returns ``[B, C]``, not a scalar. This
+[LatentFunction.expected_log_p_z][crowdgp.latent.base.LatentFunction.expected_log_p_z] returns ``[B, C]``, not a scalar. This
 is deliberate. The scalar latent term of the ELBO is recoverable from it, but
 the reverse is not, and the per-class breakdown is exactly what the closed-form
-``q(Z)`` update consumes. Returning a scalar here would make
-:class:`~crowdgp.posteriors.ClosedFormZ` impossible to write without changing
-this interface later.
+``q(Z)`` update consumes. Returning a scalar here would make a closed-form
+``q(Z)`` strategy impossible to write without changing this interface later.
 """
 
 from __future__ import annotations

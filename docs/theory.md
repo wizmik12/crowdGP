@@ -360,7 +360,7 @@ exact rather than gradient-approximate at every step. This library does not
 implement it — the reference SVGPCR model does not either — but
 `PosteriorZ.gamma`'s signature (it receives `gp_log` and `crowd_log` even
 though `FreeCategoricalZ` ignores them) exists precisely so that a
-`ClosedFormZ` strategy could be added later without changing
+closed-form `q(Z)` strategy could be added later without changing
 `GPCrowdModel.elbo_terms` at all. See the module docstring in
 [`posteriors.py`](https://github.com/wizmik12/crowdGP/blob/main/src/crowdgp/posteriors.py).
 

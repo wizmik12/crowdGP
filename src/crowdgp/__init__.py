@@ -2,16 +2,16 @@
 
 A minimal, composable implementation of scalable variational GP
 crowdsourcing models in the style of SVGPCR (Morales-Alvarez et al., 2022).
-A :class:`~crowdgp.models.GPCrowdModel` is assembled from three independently
+A [GPCrowdModel][crowdgp.models.GPCrowdModel] is assembled from three independently
 swappable strategy objects, and knows nothing about which concrete strategy
 it holds:
 
-* a :class:`~crowdgp.latent.base.LatentFunction` -- maps item features to a
+* a [LatentFunction][crowdgp.latent.base.LatentFunction] -- maps item features to a
   distribution over the true class (the part that generalises to items no
   one has annotated);
-* an :class:`~crowdgp.annotators.base.AnnotatorModel` -- describes each
+* an [AnnotatorModel][crowdgp.annotators.base.AnnotatorModel] -- describes each
   worker's labelling noise;
-* a :class:`~crowdgp.posteriors.PosteriorZ` -- the variational posterior over
+* a [PosteriorZ][crowdgp.posteriors.PosteriorZ] -- the variational posterior over
   the unknown ground-truth labels, where the two evidence streams combine.
 
 Quickstart::

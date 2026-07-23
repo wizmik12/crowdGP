@@ -14,7 +14,7 @@ alongside everything else. In the reference code it is ``self.q_unn``, an
     self.q_unn = Parameter(q_unn, transform=transforms.positive)
     q_mb = q_unn_mb / tf.reduce_sum(q_unn_mb, axis=1, keepdims=True)
 
-:class:`FreeCategoricalZ` reproduces exactly that.
+[FreeCategoricalZ][crowdgp.posteriors.FreeCategoricalZ] reproduces exactly that.
 
 An alternative worth knowing about
 ----------------------------------
@@ -51,7 +51,7 @@ class PosteriorZ(gpflow.Module, abc.ABC):
     """Abstract variational posterior over categorical ground-truth labels.
 
     Note:
-        :meth:`gamma` receives both evidence tensors even though the free
+        [gamma][crowdgp.posteriors.PosteriorZ.gamma] receives both evidence tensors even though the free
         strategy ignores them. The uniform signature is what would let a
         closed-form strategy drop in later without altering the call site in
         ``models.py``; a signature tailored to the free version would leak that
@@ -130,7 +130,7 @@ class FreeCategoricalZ(PosteriorZ):
             num_items: Dataset size ``N``.
             num_classes: Number of classes ``C``.
             init_probs: Optional ``[N, C]`` starting probabilities, normally
-                :meth:`~crowdgp.data.CrowdLabels.empirical_class_probs`, which
+                [empirical_class_probs][crowdgp.data.CrowdLabels.empirical_class_probs], which
                 is the smoothed vote histogram the reference implementation
                 uses. Defaults to uniform.
 
@@ -151,7 +151,7 @@ class FreeCategoricalZ(PosteriorZ):
         self.q_unn = gpflow.Parameter(init, transform=positive())
 
     def gamma(self, batch, gp_log, crowd_log):
-        """See :meth:`PosteriorZ.gamma`. Uses only ``batch.item_global``.
+        """See [PosteriorZ.gamma][crowdgp.posteriors.PosteriorZ.gamma]. Uses only ``batch.item_global``.
 
         Gathers this batch's rows and normalises them. The evidence arguments
         are ignored: for this strategy the evidence reaches ``gamma`` only

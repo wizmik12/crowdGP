@@ -1,7 +1,7 @@
 """Annotator (worker-noise) strategies.
 
-See :mod:`crowdgp.annotators.base` for the abstract contract every strategy
-implements, and :mod:`crowdgp.annotators.strategies` for the concrete
+See [crowdgp.annotators.base][crowdgp.annotators.base] for the abstract contract every strategy
+implements, and [crowdgp.annotators.strategies][crowdgp.annotators.strategies] for the concrete
 strategies shipped with the library.
 """
 

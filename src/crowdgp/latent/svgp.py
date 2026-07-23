@@ -125,7 +125,7 @@ class SVGPLatent(LatentFunction):
         )
 
     def expected_log_p_z(self, X: tf.Tensor) -> tf.Tensor:
-        """See :meth:`~crowdgp.latent.base.LatentFunction.expected_log_p_z`.
+        """See [expected_log_p_z][crowdgp.latent.base.LatentFunction.expected_log_p_z].
 
         Because the true class is unknown, the term is evaluated once per
         candidate class and the results assembled column-wise. The loop runs
@@ -153,7 +153,7 @@ class SVGPLatent(LatentFunction):
         return tf.concat(columns, axis=-1)
 
     def prior_kl(self) -> tf.Tensor:
-        """See :meth:`~crowdgp.latent.base.LatentFunction.prior_kl`.
+        """See [prior_kl][crowdgp.latent.base.LatentFunction.prior_kl].
 
         Delegates to GPflow, which handles the whitened and unwhitened cases.
 
@@ -163,7 +163,7 @@ class SVGPLatent(LatentFunction):
         return self.svgp.prior_kl()
 
     def predict_class_probs(self, X: tf.Tensor) -> tf.Tensor:
-        """See :meth:`~crowdgp.latent.base.LatentFunction.predict_class_probs`.
+        """See [predict_class_probs][crowdgp.latent.base.LatentFunction.predict_class_probs].
 
         Args:
             X (tf.Tensor): Feature matrix. Shape ``[B, D]``.
