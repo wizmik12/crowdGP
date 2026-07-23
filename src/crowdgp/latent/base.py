@@ -1,31 +1,11 @@
 """Abstract contract for the latent classifier ``p(z | x)``.
 
-The latent function is the half of the model that looks at *features*. While
-the annotator model asks "given this worker said cat, what was the truth?",
-this asks "given this image, what is the truth?". The two sources of evidence
-are combined by ``q(Z)``, and the whole point of a GP crowdsourcing model is
-that they regularise each other: features smooth over noisy annotations, and
-annotations supply the labels the features are fitted against.
+The latent function is the part of the model that looks at *features* and 
+predicts the *ground-truth* label. It can be thought as a latent classifier, 
+and is the part of the model that generalizes to new items. 
 
-Why this is an interface rather than a hardcoded SVGP
-----------------------------------------------------
-The obvious reason is symmetry with the annotator strategy -- a deep-kernel
-backbone, a plain GP, or a neural classifier should be swappable without
-touching the ELBO.
 
-The substantive reason is that this interface isolates an *approximation*. The
-quantity the bound requires is
-
-    E_{q(f)}[ log p(z = c | f) ]
-
-which is not ``log softmax(E[f])``. Substituting the latter is a real
-approximation with real bias: it discards the posterior variance of ``f``
-entirely, so a confidently-wrong region of feature space looks identical to an
-uncertain one. Hidden inside a model constructor, that substitution is an
-invisible assumption. Behind this interface it is a constructor flag you can
-switch and measure.
-
-Shape contract
+Shape
 --------------
 :meth:`LatentFunction.expected_log_p_z` returns ``[B, C]``, not a scalar. This
 is deliberate. The scalar latent term of the ELBO is recoverable from it, but
