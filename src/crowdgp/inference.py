@@ -1,12 +1,5 @@
 """Training utilities.
 
-The optimisation loop lives outside the model on purpose. Fitting a sparse
-variational GP well often means two optimisers -- natural gradients on the
-variational parameters ``(q_mu, q_sqrt)``, Adam on everything else -- and a
-``model.fit()`` method would have to know about that split, re-coupling exactly
-what composition was meant to separate. Keeping training here means a new
-optimisation scheme is a new function, not an edit to the model.
-
 Minibatching
 ------------
 Only *item indices* are shuffled. Features, annotations and ``q(Z)`` rows are

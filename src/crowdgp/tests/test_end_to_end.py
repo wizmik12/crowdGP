@@ -22,7 +22,7 @@ import numpy as np
 import pytest
 import tensorflow as tf
 
-from gpcrowd import (
+from crowdgp import (
     FreeCategoricalZ,
     GPCrowdModel,
     OneCoinAnnotator,
@@ -210,7 +210,7 @@ def test_predicts_on_unannotated_items():
     held_out_z = data.z[train_n:]
 
     keep = data.labels.item_idx < train_n
-    from gpcrowd import CrowdLabels
+    from crowdgp import CrowdLabels
 
     sub = CrowdLabels(
         item_idx=data.labels.item_idx[keep],

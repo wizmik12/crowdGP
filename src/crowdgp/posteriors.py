@@ -130,7 +130,7 @@ class FreeCategoricalZ(PosteriorZ):
             num_items: Dataset size ``N``.
             num_classes: Number of classes ``C``.
             init_probs: Optional ``[N, C]`` starting probabilities, normally
-                :meth:`~gpcrowd.data.CrowdLabels.empirical_class_probs`, which
+                :meth:`~crowdgp.data.CrowdLabels.empirical_class_probs`, which
                 is the smoothed vote histogram the reference implementation
                 uses. Defaults to uniform.
 

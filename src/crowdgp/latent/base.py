@@ -11,7 +11,7 @@ Shape
 is deliberate. The scalar latent term of the ELBO is recoverable from it, but
 the reverse is not, and the per-class breakdown is exactly what the closed-form
 ``q(Z)`` update consumes. Returning a scalar here would make
-:class:`~gpcrowd.posteriors.ClosedFormZ` impossible to write without changing
+:class:`~crowdgp.posteriors.ClosedFormZ` impossible to write without changing
 this interface later.
 """
 

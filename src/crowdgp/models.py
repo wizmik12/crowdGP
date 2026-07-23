@@ -3,11 +3,11 @@
 ===============  ================================================
 ELBO term        Supplied by
 ===============  ================================================
-``latent``       :class:`~gpcrowd.latent.base.LatentFunction`
-``crowd``        :class:`~gpcrowd.annotators.base.AnnotatorModel`
-``entropy``      :class:`~gpcrowd.posteriors.PosteriorZ`
-``kl_latent``    :class:`~gpcrowd.latent.base.LatentFunction`
-``kl_annotator`` :class:`~gpcrowd.annotators.base.AnnotatorModel`
+``latent``       :class:`~crowdgp.latent.base.LatentFunction`
+``crowd``        :class:`~crowdgp.annotators.base.AnnotatorModel`
+``entropy``      :class:`~crowdgp.posteriors.PosteriorZ`
+``kl_latent``    :class:`~crowdgp.latent.base.LatentFunction`
+``kl_annotator`` :class:`~crowdgp.annotators.base.AnnotatorModel`
 ===============  ================================================
 
 """
@@ -88,15 +88,15 @@ class GPCrowdModel(gpflow.Module):
 
     Composed of three pluggable parts, none of which this class inspects:
 
-    * a :class:`~gpcrowd.latent.base.LatentFunction` mapping features to
+    * a :class:`~crowdgp.latent.base.LatentFunction` mapping features to
       per-class log evidence,
-    * an :class:`~gpcrowd.annotators.base.AnnotatorModel` describing worker
+    * an :class:`~crowdgp.annotators.base.AnnotatorModel` describing worker
       noise,
-    * a :class:`~gpcrowd.posteriors.PosteriorZ` over the unknown true labels.
+    * a :class:`~crowdgp.posteriors.PosteriorZ` over the unknown true labels.
 
-With :class:`~gpcrowd.latent.svgp.SVGPLatent`,
-    :class:`~gpcrowd.annotators.strategies.VariationalDirichletAnnotator` and
-    :class:`~gpcrowd.posteriors.FreeCategoricalZ` this reproduces SVGPCR
+With :class:`~crowdgp.latent.svgp.SVGPLatent`,
+    :class:`~crowdgp.annotators.strategies.VariationalDirichletAnnotator` and
+    :class:`~crowdgp.posteriors.FreeCategoricalZ` this reproduces SVGPCR
     (Morales-Alvarez et al.).
 
     Attributes:
@@ -121,7 +121,7 @@ With :class:`~gpcrowd.latent.svgp.SVGPLatent`,
             num_data: Total number of items ``N``. Given explicitly rather than
                 inferred from a batch, since a minibatch cannot know it.
             q_z: Ground-truth posterior strategy, e.g.
-                :class:`~gpcrowd.posteriors.FreeCategoricalZ`. Required rather
+                :class:`~crowdgp.posteriors.FreeCategoricalZ`. Required rather
                 than defaulted: it needs ``N`` and ``C``, which this
                 constructor does not have, and the choice is a modelling
                 decision rather than an implementation detail.

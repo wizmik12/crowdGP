@@ -19,7 +19,7 @@ implemented once in :class:`AnnotatorModel` rather than in every subclass:
 * weighting that by ``q(Z)`` and summing gives the scalar ELBO term
   (:meth:`AnnotatorModel.expected_log_likelihood`);
 * adding it to the latent term and taking a softmax gives the closed-form
-  update for ``q(Z)`` (see :mod:`gpcrowd.posteriors`).
+  update for ``q(Z)`` (see :mod:`crowdgp.posteriors`).
 
 Choosing the scalar ``expected_log_likelihood`` as the primitive instead would
 force every subclass to repeat the aggregation, and would discard the per-item

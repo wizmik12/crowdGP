@@ -1,7 +1,7 @@
 """Concrete annotator strategies.
 
 Three interchangeable worker-noise models, all satisfying the
-:class:`~gpcrowd.annotators.base.AnnotatorModel` object. The core engine
+:class:`~crowdgp.annotators.base.AnnotatorModel` object. The core engine
 never learns which one it holds, so adding a fourth requires no change
 anywhere else in the library.
 
@@ -351,7 +351,7 @@ def init_alpha_tilde(
     Args:
         labels: The annotations.
         class_probs: Soft per-item class assignments ``[N, C]``, typically
-            :meth:`~gpcrowd.data.CrowdLabels.empirical_class_probs`.
+            :meth:`~crowdgp.data.CrowdLabels.empirical_class_probs`.
         prior_strength: Constant added to every entry, keeping concentrations
             comfortably positive and the digamma well conditioned.
 
