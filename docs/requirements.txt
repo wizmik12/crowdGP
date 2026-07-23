@@ -1,0 +1,9 @@
+# Doc-build-only requirements for Read the Docs (see .readthedocs.yaml).
+# Deliberately excludes the library's own dependencies (numpy, tensorflow,
+# gpflow): mkdocstrings reads docstrings via static analysis, not by
+# importing crowdgp, so the docs build never needs them. Keep this in sync
+# with the "docs" extra in pyproject.toml.
+mkdocs>=1.6
+mkdocs-material>=9.5
+mkdocstrings[python]>=0.25
+black>=24

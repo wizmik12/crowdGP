@@ -124,10 +124,18 @@ changing modelling code or adding a new strategy.
 ## Documentation site
 
 The same theory, an auto-generated API reference, and the examples are also
-published as a browsable site (MkDocs + Material,
-[`mkdocs.yml`](mkdocs.yml)), built and deployed to GitHub Pages by
-[`.github/workflows/docs.yml`](.github/workflows/docs.yml) on every push to
-`main`. To build it locally:
+published as a browsable site (MkDocs + Material, [`mkdocs.yml`](mkdocs.yml)),
+built by [Read the Docs](https://readthedocs.org) from
+[`.readthedocs.yaml`](.readthedocs.yaml) on every push to `main`, once the
+repository is imported there (**Sign in → Add project → select
+`wizmik12/crowdGP`** on readthedocs.org; a one-time step only a project owner
+can do). It will then live at `https://crowdgp.readthedocs.io/`.
+
+The docs build only needs the MkDocs/mkdocstrings toolchain
+([`docs/requirements.txt`](docs/requirements.txt)), not the library's own
+dependencies -- `mkdocstrings` reads docstrings via static analysis, never by
+importing `crowdgp`, so TensorFlow and GPflow are never installed just to
+build docs. To build it locally:
 
 ```bash
 pip install -e ".[docs]"
