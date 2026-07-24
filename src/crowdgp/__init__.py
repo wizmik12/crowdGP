@@ -59,6 +59,14 @@ from .latent.svgp import SVGPLatent
 from .models import ELBOTerms, GPCrowdModel
 from .posteriors import FreeCategoricalZ, PosteriorZ
 from .synthetic import SyntheticCrowd, make_synthetic
+from .metrics import (
+    label_accuracy,
+    balanced_accuracy,
+    confusion_error,
+    expected_calibration_error,
+    cross_entropy,
+    worker_accuracy_correlation,
+)
 
 __version__ = "0.1.0"
 
@@ -89,4 +97,11 @@ __all__ = [
     # synthetic data
     "SyntheticCrowd",
     "make_synthetic",
+    # metrics
+    "label_accuracy",
+    "balanced_accuracy",
+    "confusion_error",
+    "expected_calibration_error",
+    "cross_entropy",
+    "worker_accuracy_correlation",
 ]
