@@ -70,4 +70,4 @@ In practice:
 
 If you think your contribution is heading toward that level, **please raise it early**, while you're working on it rather than after a paper is submitted. Journal author lists are fixed at submission and awkward to change afterward, so an early conversation genuinely serves both sides. Co-authorship also carries obligations: co-authors provide an ORCID iD, review and approve the manuscript, and stay reachable through submission and revision.
 
-Questions about any of this are welcome — open an issue, or contact the maintainer listed in [`CITATION.cff`](CITATION.cff).
+Questions about any of this are welcome — open an issue, or contact the maintainer listed in [`CITATION.cff`](citation.cff).
