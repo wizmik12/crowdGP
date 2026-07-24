@@ -15,8 +15,8 @@ This project accompanies ongoing academic research, so this guide also explains 
 ## Development setup
 
 ```bash
-git clone https://github.com/wizmik12/crowdGP
-cd crowdGP
+git clone https://github.com/wizmik12/gpcrowdkit
+cd gpcrowdkit
 pip install -e ".[dev]"
 pytest -m "not slow"      # fast unit + smoke tests, a few seconds
 pytest                     # everything, including end-to-end training (~2 min)

@@ -1,3 +1,3 @@
 # Model
 
-::: crowdgp.models
+::: gpcrowdkit.models

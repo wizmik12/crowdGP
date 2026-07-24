@@ -2,8 +2,8 @@
 
 ## Abstract contract
 
-::: crowdgp.latent.base
+::: gpcrowdkit.latent.base
 
 ## Sparse variational GP implementation
 
-::: crowdgp.latent.svgp
+::: gpcrowdkit.latent.svgp

@@ -1,4 +1,4 @@
-# crowdgp
+# gpcrowdkit
 
 [![License: Apache 2.0](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](pyproject.toml)
@@ -17,7 +17,7 @@ The default configuration reproduces **SVGPCR**:
 ## Status
 
 Research code under active development, released alongside ongoing work from
-the authors' group. The public API (`crowdgp.*`, see [Architecture](#architecture))
+the authors' group. The public API (`gpcrowdkit.*`, see [Architecture](#architecture))
 is reasonably stable, but interfaces can still change between versions ahead
 of a first tagged release -- pin a commit if you depend on it for a
 publication. Issues and pull requests are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md)
@@ -48,7 +48,7 @@ and `gpflow`.
 
 ```python
 import gpflow
-from crowdgp import (
+from gpcrowdkit import (
     FreeCategoricalZ, GPCrowdModel, SVGPLatent,
     VariationalDirichletAnnotator, init_alpha_tilde, make_synthetic, train,
 )
@@ -91,11 +91,11 @@ change to the core engine.
 
 | Component | Abstract base | Job | Shipped implementations |
 |---|---|---|---|
-| Latent classifier | [`LatentFunction`](src/crowdgp/latent/base.py) | maps item features to per-class evidence | [`SVGPLatent`](src/crowdgp/latent/svgp.py) (sparse variational multi-class GP) |
-| Annotator model | [`AnnotatorModel`](src/crowdgp/annotators/base.py) | describes each worker's labelling noise | [`VariationalDirichletAnnotator`](src/crowdgp/annotators/strategies.py), `SoftmaxPointAnnotator`, `OneCoinAnnotator` |
-| Ground-truth posterior | [`PosteriorZ`](src/crowdgp/posteriors.py) | combines both evidence streams into `q(z_n = c)` | [`FreeCategoricalZ`](src/crowdgp/posteriors.py) |
+| Latent classifier | [`LatentFunction`](src/gpcrowdkit/latent/base.py) | maps item features to per-class evidence | [`SVGPLatent`](src/gpcrowdkit/latent/svgp.py) (sparse variational multi-class GP) |
+| Annotator model | [`AnnotatorModel`](src/gpcrowdkit/annotators/base.py) | describes each worker's labelling noise | [`VariationalDirichletAnnotator`](src/gpcrowdkit/annotators/strategies.py), `SoftmaxPointAnnotator`, `OneCoinAnnotator` |
+| Ground-truth posterior | [`PosteriorZ`](src/gpcrowdkit/posteriors.py) | combines both evidence streams into `q(z_n = c)` | [`FreeCategoricalZ`](src/gpcrowdkit/posteriors.py) |
 
-`GPCrowdModel.elbo_terms` (in [`models.py`](src/crowdgp/models.py)) is the
+`GPCrowdModel.elbo_terms` (in [`models.py`](src/gpcrowdkit/models.py)) is the
 entire core engine: ask the latent function what the features imply, ask the
 annotator what the workers imply, ask `q(Z)` to combine them, weight and add.
 Everything else is in the strategies.
@@ -109,7 +109,7 @@ base class. See the docstrings in `annotators/base.py` and `latent/base.py`
 for the full contract and the reasoning behind its shape.
 
 Data flows through the library as sparse `(item, worker, label)` triples via
-[`CrowdLabels`](src/crowdgp/data.py) -- see its module docstring for why COO
+[`CrowdLabels`](src/gpcrowdkit/data.py) -- see its module docstring for why COO
 storage and structural batch alignment were chosen over a dense label matrix.
 
 ## Theory
@@ -129,13 +129,13 @@ published as a browsable site (MkDocs + Material, [`mkdocs.yml`](mkdocs.yml)),
 built by [Read the Docs](https://readthedocs.org) from
 [`.readthedocs.yaml`](.readthedocs.yaml) on every push to `main`, once the
 repository is imported there (**Sign in → Add project → select
-`wizmik12/crowdGP`** on readthedocs.org; a one-time step only a project owner
-can do). It will then live at `https://crowdgp.readthedocs.io/`.
+`wizmik12/gpcrowdkit`** on readthedocs.org; a one-time step only a project owner
+can do). It will then live at `https://gpcrowdkit.readthedocs.io/`.
 
 The docs build only needs the MkDocs/mkdocstrings toolchain
 ([`docs/requirements.txt`](docs/requirements.txt)), not the library's own
 dependencies -- `mkdocstrings` reads docstrings via static analysis, never by
-importing `crowdgp`, so TensorFlow and GPflow are never installed just to
+importing `gpcrowdkit`, so TensorFlow and GPflow are never installed just to
 build docs. To build it locally:
 
 ```bash
@@ -153,7 +153,7 @@ pytest                  # + end-to-end training tests that verify the model
                         # confusion matrices, ~2 minutes
 ```
 
-`src/crowdgp/tests/test_end_to_end.py` is the test module to read first if
+`src/gpcrowdkit/tests/test_end_to_end.py` is the test module to read first if
 you are changing modelling code: unlike the unit tests, it checks properties
 that no amount of correct-looking code guarantees on its own.
 

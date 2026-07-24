@@ -1,5 +1,5 @@
 #!/bin/bash
-# Run a script with the crowdGP venv and GPU libraries configured.
+# Run a script with the gpcrowdkit venv and GPU libraries configured.
 # Usage: ./run.sh script.py [args...]
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

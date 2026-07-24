@@ -1,3 +1,3 @@
 # Synthetic data
 
-::: crowdgp.synthetic
+::: gpcrowdkit.synthetic

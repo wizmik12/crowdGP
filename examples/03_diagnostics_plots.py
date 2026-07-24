@@ -9,7 +9,7 @@ Two plots, saved to ``examples/output/``:
     to reproduce the annotations and is ignoring the features, so it will not
     generalise to a single unannotated item. That failure is invisible in the
     total and obvious in the decomposition -- which is the whole reason
-    :class:`~crowdgp.models.ELBOTerms` reports it separately (see models.py).
+    :class:`~gpcrowdkit.models.ELBOTerms` reports it separately (see models.py).
 
 ``confusion_recovery.png``
     True vs. recovered confusion matrix for a handful of workers -- a visual
@@ -35,7 +35,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import tensorflow as tf
 
-from crowdgp import (
+from gpcrowdkit import (
     FreeCategoricalZ,
     GPCrowdModel,
     SVGPLatent,

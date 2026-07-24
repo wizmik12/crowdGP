@@ -1,7 +1,7 @@
-site_name: crowdgp
+site_name: gpcrowdkit
 site_description: Gaussian-process models for learning from crowds
-repo_url: https://github.com/wizmik12/crowdGP
-repo_name: wizmik12/crowdGP
+repo_url: https://github.com/wizmik12/gpcrowdkit
+repo_name: wizmik12/gpcrowdkit
 edit_uri: edit/main/docs/
 
 theme:

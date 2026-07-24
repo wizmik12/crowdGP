@@ -1,3 +1,3 @@
 # Ground-truth posterior
 
-::: crowdgp.posteriors
+::: gpcrowdkit.posteriors

@@ -1,7 +1,7 @@
 """Swap the annotator strategy without touching anything else.
 
 `GPCrowdModel` never inspects which concrete `AnnotatorModel` it holds -- it
-only calls the abstract contract in `crowdgp.annotators.base`. This script is
+only calls the abstract contract in `gpcrowdkit.annotators.base`. This script is
 the demonstration: the same synthetic dataset and the same latent GP are
 reused across all three shipped strategies, and only the one line that
 constructs `annotator=` changes.
@@ -17,7 +17,7 @@ import gpflow
 import numpy as np
 import tensorflow as tf
 
-from crowdgp import (
+from gpcrowdkit import (
     FreeCategoricalZ,
     GPCrowdModel,
     OneCoinAnnotator,
@@ -28,7 +28,7 @@ from crowdgp import (
     make_synthetic,
     train,
 )
-from crowdgp.annotators.base import AnnotatorModel
+from gpcrowdkit.annotators.base import AnnotatorModel
 
 
 def accuracy(pred: np.ndarray, true: np.ndarray) -> float:

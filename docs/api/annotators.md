@@ -2,8 +2,8 @@
 
 ## Abstract contract
 
-::: crowdgp.annotators.base
+::: gpcrowdkit.annotators.base
 
 ## Shipped strategies
 
-::: crowdgp.annotators.strategies
+::: gpcrowdkit.annotators.strategies

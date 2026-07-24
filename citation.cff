@@ -1,14 +1,14 @@
 cff-version: 1.2.0
 message: "If you use this software, please cite it using these metadata."
-title: "crowdGP"
+title: "gpcrowdkit"
 abstract: >-
   Gaussian-process models for learning from crowds: fitting a classifier from
   noisy, incomplete crowdsourced annotations jointly with a model of each
   annotator's reliability. The default configuration reproduces SVGPCR.
 type: software
 license: Apache-2.0
-repository-code: "https://github.com/wizmik12/crowdGP"
-url: "https://github.com/wizmik12/crowdGP"
+repository-code: "https://github.com/wizmik12/gpcrowdkit"
+url: "https://github.com/wizmik12/gpcrowdkit"
 keywords:
   - crowdsourcing
   - learning from crowds

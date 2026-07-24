@@ -19,8 +19,8 @@ import tensorflow as tf
 
 import gpflow
 
-from crowdgp.annotators.base import AnnotatorModel, ConfusionAnnotator
-from crowdgp.data import CrowdLabels
+from gpcrowdkit.annotators.base import AnnotatorModel, ConfusionAnnotator
+from gpcrowdkit.data import CrowdLabels
 
 FLOAT = tf.float64
 

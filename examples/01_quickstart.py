@@ -16,7 +16,7 @@ import gpflow
 import numpy as np
 import tensorflow as tf
 
-from crowdgp import (
+from gpcrowdkit import (
     FreeCategoricalZ,
     GPCrowdModel,
     SVGPLatent,
@@ -91,7 +91,7 @@ def main() -> None:
 
     print("\nAccuracy against the (normally hidden) true labels:")
     print(f"  majority vote : {mv_acc:.3f}")
-    print(f"  crowdgp model : {model_acc:.3f}")
+    print(f"  gpcrowdkit model : {model_acc:.3f}")
 
     est_confusion = model.annotator.confusion_matrices().numpy()
     confusion_mae = np.abs(est_confusion - data.confusion).mean()

@@ -1,12 +1,12 @@
 # Theory: probabilistic formulation
 
 This document derives the generative model and the variational inference
-scheme that `crowdgp` implements, and connects every term to the code that
+scheme that `gpcrowdkit` implements, and connects every term to the code that
 computes it. It assumes familiarity with sparse variational Gaussian
 processes and mean-field variational inference; see the
 [References](#references) section for the papers this reproduces.
 
-If you only want to *use* the library, the [README](https://github.com/wizmik12/crowdGP/blob/main/README.md) is enough.
+If you only want to *use* the library, the [README](https://github.com/wizmik12/gpcrowdkit/blob/main/README.md) is enough.
 Read this document when you are changing modelling code, adding a new
 strategy, or need to know exactly which quantity a given line of code is
 computing.
@@ -44,11 +44,11 @@ computing.
 
 Throughout, $R^a_{ij} = P(\text{observed} = i \mid \text{true} = j)$ for worker
 $a$ — **columns**, not rows, are the probability vectors. This is the
-convention fixed in [`annotators/base.py`](https://github.com/wizmik12/crowdGP/blob/main/src/crowdgp/annotators/base.py);
+convention fixed in [`annotators/base.py`](https://github.com/wizmik12/gpcrowdkit/blob/main/src/gpcrowdkit/annotators/base.py);
 sampling or normalising along the wrong axis produces a model that trains
 happily and learns the transpose of the intended one (see
 `test_recovers_confusion_matrices` in
-[`test_end_to_end.py`](https://github.com/wizmik12/crowdGP/blob/main/src/crowdgp/tests/test_end_to_end.py), which exists
+[`test_end_to_end.py`](https://github.com/wizmik12/gpcrowdkit/blob/main/src/gpcrowdkit/tests/test_end_to_end.py), which exists
 specifically to catch that).
 
 ## The generative model
@@ -106,7 +106,7 @@ $X$, $Y$ (the annotations) are observed; $f$, $Z$, $R$ are not.
 ## Variational family
 
 Mean-field across the three latent groups, matching the three objects
-composed by [`GPCrowdModel`](https://github.com/wizmik12/crowdGP/blob/main/src/crowdgp/models.py):
+composed by [`GPCrowdModel`](https://github.com/wizmik12/gpcrowdkit/blob/main/src/gpcrowdkit/models.py):
 
 $$
 q(f, Z, R) \;=\; \Big[\prod_{c=1}^C p(f_c \mid u_c)\, q(u_c)\Big]
@@ -115,17 +115,17 @@ q(f, Z, R) \;=\; \Big[\prod_{c=1}^C p(f_c \mid u_c)\, q(u_c)\Big]
 $$
 
 * $q(u_c) = \mathcal{N}(m_c, S_c)$ — handled by
-  [`SVGPLatent`](https://github.com/wizmik12/crowdGP/blob/main/src/crowdgp/latent/svgp.py) (a `gpflow.models.SVGP`);
+  [`SVGPLatent`](https://github.com/wizmik12/gpcrowdkit/blob/main/src/gpcrowdkit/latent/svgp.py) (a `gpflow.models.SVGP`);
   $p(f_c\mid u_c)$ is kept unintegrated on both sides, in the usual sparse-GP
   trick, so it cancels in the ELBO below and never needs to be evaluated.
 * $q(z_n) = \mathrm{Categorical}(\gamma_n)$, $\gamma_n$ a free point in the
-  $(C-1)$-simplex — [`FreeCategoricalZ`](https://github.com/wizmik12/crowdGP/blob/main/src/crowdgp/posteriors.py).
+  $(C-1)$-simplex — [`FreeCategoricalZ`](https://github.com/wizmik12/gpcrowdkit/blob/main/src/gpcrowdkit/posteriors.py).
 * $q(R^a_{\cdot,j})$ is either a Dirichlet
   ($\mathrm{Dir}(\tilde\alpha^a_{\cdot,j})$,
-  [`VariationalDirichletAnnotator`](https://github.com/wizmik12/crowdGP/blob/main/src/crowdgp/annotators/strategies.py))
+  [`VariationalDirichletAnnotator`](https://github.com/wizmik12/gpcrowdkit/blob/main/src/gpcrowdkit/annotators/strategies.py))
   or a Dirac point mass at a deterministic estimate
-  ([`SoftmaxPointAnnotator`](https://github.com/wizmik12/crowdGP/blob/main/src/crowdgp/annotators/strategies.py),
-  [`OneCoinAnnotator`](https://github.com/wizmik12/crowdGP/blob/main/src/crowdgp/annotators/strategies.py)) — see
+  ([`SoftmaxPointAnnotator`](https://github.com/wizmik12/gpcrowdkit/blob/main/src/gpcrowdkit/annotators/strategies.py),
+  [`OneCoinAnnotator`](https://github.com/wizmik12/gpcrowdkit/blob/main/src/gpcrowdkit/annotators/strategies.py)) — see
   [below](#the-annotator-noise-model).
 
 ## The evidence lower bound
@@ -149,7 +149,7 @@ $$
 $$
 
 This is exactly the five-term decomposition returned by
-[`GPCrowdModel.elbo_terms`](https://github.com/wizmik12/crowdGP/blob/main/src/crowdgp/models.py) as
+[`GPCrowdModel.elbo_terms`](https://github.com/wizmik12/gpcrowdkit/blob/main/src/gpcrowdkit/models.py) as
 `ELBOTerms(latent, crowd, entropy, kl_latent, kl_annotator, scale)`, and
 
 ```
@@ -168,9 +168,9 @@ climbs steadily while `latent` stays flat: the total ELBO still rises, the
 model still converges, and it has learned to reproduce the annotations while
 ignoring the features entirely — useless on anything unannotated, and
 invisible unless you look at the decomposition. This is exactly what
-[`examples/03_diagnostics_plots.py`](https://github.com/wizmik12/crowdGP/blob/main/examples/03_diagnostics_plots.py)
+[`examples/03_diagnostics_plots.py`](https://github.com/wizmik12/gpcrowdkit/blob/main/examples/03_diagnostics_plots.py)
 plots, and what `test_latent_term_actually_improves` in
-[`test_end_to_end.py`](https://github.com/wizmik12/crowdGP/blob/main/src/crowdgp/tests/test_end_to_end.py) checks for.
+[`test_end_to_end.py`](https://github.com/wizmik12/gpcrowdkit/blob/main/src/gpcrowdkit/tests/test_end_to_end.py) checks for.
 
 ## The latent classifier: sparse variational multi-class GP
 
@@ -223,7 +223,7 @@ computed by `gpflow.models.SVGP.prior_kl()` and exposed as
 `SVGPLatent.prior_kl()`. Whitening is what keeps this well-conditioned when
 the kernel hyperparameters are also being optimised jointly (Hensman et al.,
 2015) — see the constructor docstring in
-[`latent/svgp.py`](https://github.com/wizmik12/crowdGP/blob/main/src/crowdgp/latent/svgp.py).
+[`latent/svgp.py`](https://github.com/wizmik12/gpcrowdkit/blob/main/src/gpcrowdkit/latent/svgp.py).
 
 ## The annotator noise model
 
@@ -278,7 +278,7 @@ with $B(x) = \prod_i \Gamma(x_i) / \Gamma(\sum_i x_i)$. `tf.math.lbeta`
 reduces the *last* axis, so the implementation transposes to put the
 observed-class axis (axis 1, the Dirichlet's own axis) last before calling
 it — see the note in
-[`annotators/strategies.py`](https://github.com/wizmik12/crowdGP/blob/main/src/crowdgp/annotators/strategies.py).
+[`annotators/strategies.py`](https://github.com/wizmik12/gpcrowdkit/blob/main/src/gpcrowdkit/annotators/strategies.py).
 
 **Posterior mean**, for reporting via `confusion_matrices()`:
 $\mathbb{E}_q[R^a_{ij}] = \tilde\alpha^a_{ij} / \sum_{i'}\tilde\alpha^a_{i'j}$
@@ -323,7 +323,7 @@ estimate.
 ### The design test these three pass together
 
 `OneCoinAnnotator` is why the abstract contract in
-[`annotators/base.py`](https://github.com/wizmik12/crowdGP/blob/main/src/crowdgp/annotators/base.py) does not promise a
+[`annotators/base.py`](https://github.com/wizmik12/gpcrowdkit/blob/main/src/gpcrowdkit/annotators/base.py) does not promise a
 confusion-matrix parameter: it *builds* one on the fly from a single scalar,
 it does not *store* one. An interface requiring an `[A,C,C]` parameter tensor
 would have been the wrong abstraction for exactly this strategy — the
@@ -362,7 +362,7 @@ implement it — the reference SVGPCR model does not either — but
 though `FreeCategoricalZ` ignores them) exists precisely so that a
 closed-form `q(Z)` strategy could be added later without changing
 `GPCrowdModel.elbo_terms` at all. See the module docstring in
-[`posteriors.py`](https://github.com/wizmik12/crowdGP/blob/main/src/crowdgp/posteriors.py).
+[`posteriors.py`](https://github.com/wizmik12/gpcrowdkit/blob/main/src/gpcrowdkit/posteriors.py).
 
 **Entropy.** $\mathrm{H}[q(z_n)] = -\sum_c \gamma_{nc}\log\gamma_{nc} \ge 0$,
 added to the ELBO (some derivations of this bound subtract a *negative*
@@ -373,7 +373,7 @@ looking correct).
 ## Stochastic optimization over minibatches
 
 A minibatch is a set of $B$ **items**, plus every annotation belonging to
-them ([`CrowdBatch`](https://github.com/wizmik12/crowdGP/blob/main/src/crowdgp/data.py)). `latent`, `crowd`, `entropy`
+them ([`CrowdBatch`](https://github.com/wizmik12/gpcrowdkit/blob/main/src/gpcrowdkit/data.py)). `latent`, `crowd`, `entropy`
 are all sums over items, so a batch estimates $B/N$ of the full sum, and the
 unbiased full-data estimate requires the correction
 
@@ -388,14 +388,14 @@ complexity penalty by that same factor and produce a model that
 systematically underfits — a failure mode that is very hard to read off the
 loss curve alone, since the (wrongly scaled) total still decreases
 monotonically. `test_minibatch_elbo_is_unbiased` in
-[`test_end_to_end.py`](https://github.com/wizmik12/crowdGP/blob/main/src/crowdgp/tests/test_end_to_end.py) checks this
+[`test_end_to_end.py`](https://github.com/wizmik12/gpcrowdkit/blob/main/src/gpcrowdkit/tests/test_end_to_end.py) checks this
 directly, by comparing the mean of many random-batch ELBO estimates against
 the full-data value.
 
 All trainable parameters — kernel hyperparameters, inducing locations,
 $q(u)$'s mean and covariance, $q(Z)$'s free parameters, and $q(R)$'s
 concentrations or point logits — are optimised **jointly** by a single Adam
-optimiser on the negative ELBO ([`inference.train`](https://github.com/wizmik12/crowdGP/blob/main/src/crowdgp/inference.py)).
+optimiser on the negative ELBO ([`inference.train`](https://github.com/wizmik12/gpcrowdkit/blob/main/src/gpcrowdkit/inference.py)).
 This is the simplest scheme that works; natural gradients on the variational
 Gaussian parameters, or the closed-form $q(Z)$ update above, are documented
 extension points rather than implemented alternatives.
@@ -420,7 +420,7 @@ Two distinct predictive quantities, for two distinct situations:
   about these items — and this is the method that only exists because a
   latent *classifier* was fit, rather than merely a denoised label matrix.
   `test_predicts_on_unannotated_items` in
-  [`test_end_to_end.py`](https://github.com/wizmik12/crowdGP/blob/main/src/crowdgp/tests/test_end_to_end.py) is the
+  [`test_end_to_end.py`](https://github.com/wizmik12/gpcrowdkit/blob/main/src/gpcrowdkit/tests/test_end_to_end.py) is the
   test that would fail if this generalisation were illusory.
 
 ## Relationship to the literature

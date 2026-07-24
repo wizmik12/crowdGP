@@ -1,7 +1,7 @@
 """Latent classifier strategies, ``p(z | x)``.
 
-See [crowdgp.latent.base][crowdgp.latent.base] for the abstract contract, and
-[crowdgp.latent.svgp][crowdgp.latent.svgp] for the sparse variational GP implementation
+See [gpcrowdkit.latent.base][gpcrowdkit.latent.base] for the abstract contract, and
+[gpcrowdkit.latent.svgp][gpcrowdkit.latent.svgp] for the sparse variational GP implementation
 shipped with the library.
 """
 

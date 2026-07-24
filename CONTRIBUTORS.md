@@ -1,6 +1,6 @@
 # Contributors
 
-Thanks to everyone who has contributed to crowdGP. Software contributions are
+Thanks to everyone who has contributed to gpcrowdkit. Software contributions are
 credited here regardless of size; see [CONTRIBUTING.md](CONTRIBUTING.md) for how
 this relates to paper authorship.
 

@@ -3,11 +3,11 @@
 ===============  ================================================
 ELBO term        Supplied by
 ===============  ================================================
-``latent``       [LatentFunction][crowdgp.latent.base.LatentFunction]
-``crowd``        [AnnotatorModel][crowdgp.annotators.base.AnnotatorModel]
-``entropy``      [PosteriorZ][crowdgp.posteriors.PosteriorZ]
-``kl_latent``    [LatentFunction][crowdgp.latent.base.LatentFunction]
-``kl_annotator`` [AnnotatorModel][crowdgp.annotators.base.AnnotatorModel]
+``latent``       [LatentFunction][gpcrowdkit.latent.base.LatentFunction]
+``crowd``        [AnnotatorModel][gpcrowdkit.annotators.base.AnnotatorModel]
+``entropy``      [PosteriorZ][gpcrowdkit.posteriors.PosteriorZ]
+``kl_latent``    [LatentFunction][gpcrowdkit.latent.base.LatentFunction]
+``kl_annotator`` [AnnotatorModel][gpcrowdkit.annotators.base.AnnotatorModel]
 ===============  ================================================
 
 """
@@ -88,15 +88,15 @@ class GPCrowdModel(gpflow.Module):
 
     Composed of three pluggable parts, none of which this class inspects:
 
-    * a [LatentFunction][crowdgp.latent.base.LatentFunction] mapping features to
+    * a [LatentFunction][gpcrowdkit.latent.base.LatentFunction] mapping features to
       per-class log evidence,
-    * an [AnnotatorModel][crowdgp.annotators.base.AnnotatorModel] describing worker
+    * an [AnnotatorModel][gpcrowdkit.annotators.base.AnnotatorModel] describing worker
       noise,
-    * a [PosteriorZ][crowdgp.posteriors.PosteriorZ] over the unknown true labels.
+    * a [PosteriorZ][gpcrowdkit.posteriors.PosteriorZ] over the unknown true labels.
 
-With [SVGPLatent][crowdgp.latent.svgp.SVGPLatent],
-    [VariationalDirichletAnnotator][crowdgp.annotators.strategies.VariationalDirichletAnnotator] and
-    [FreeCategoricalZ][crowdgp.posteriors.FreeCategoricalZ] this reproduces SVGPCR
+With [SVGPLatent][gpcrowdkit.latent.svgp.SVGPLatent],
+    [VariationalDirichletAnnotator][gpcrowdkit.annotators.strategies.VariationalDirichletAnnotator] and
+    [FreeCategoricalZ][gpcrowdkit.posteriors.FreeCategoricalZ] this reproduces SVGPCR
     (Morales-Alvarez et al.).
 
     Attributes:
@@ -121,7 +121,7 @@ With [SVGPLatent][crowdgp.latent.svgp.SVGPLatent],
             num_data: Total number of items ``N``. Given explicitly rather than
                 inferred from a batch, since a minibatch cannot know it.
             q_z: Ground-truth posterior strategy, e.g.
-                [FreeCategoricalZ][crowdgp.posteriors.FreeCategoricalZ]. Required rather
+                [FreeCategoricalZ][gpcrowdkit.posteriors.FreeCategoricalZ]. Required rather
                 than defaulted: it needs ``N`` and ``C``, which this
                 constructor does not have, and the choice is a modelling
                 decision rather than an implementation detail.
@@ -178,7 +178,7 @@ With [SVGPLatent][crowdgp.latent.svgp.SVGPLatent],
         return self.elbo_terms(batch).total
 
     def maximum_log_likelihood_objective(self, batch: CrowdBatch) -> tf.Tensor:
-        """GPflow-conventional alias for [elbo][crowdgp.models.GPCrowdModel.elbo]."""
+        """GPflow-conventional alias for [elbo][gpcrowdkit.models.GPCrowdModel.elbo]."""
         return self.elbo(batch)
 
     def training_loss(self, batch: CrowdBatch) -> tf.Tensor:
@@ -223,7 +223,7 @@ With [SVGPLatent][crowdgp.latent.svgp.SVGPLatent],
 
         Note:
             Runs on the full dataset in one pass. For large ``N`` this is the
-            method to batch, not [elbo][crowdgp.models.GPCrowdModel.elbo].
+            method to batch, not [elbo][gpcrowdkit.models.GPCrowdModel.elbo].
         """
         batch = labels.full_batch(X)
         gp_log = self.latent.expected_log_p_z(batch.X)
