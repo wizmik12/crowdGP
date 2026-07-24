@@ -1,72 +1,73 @@
 # Contributing
 
-Thank you for considering contributing to this project! We welcome bug reports, bug fixes, documentation improvements, and new features.
+Thanks for your interest in contributing! Bug reports, bug fixes, documentation, tests, and new features are all welcome.
 
-Before contributing, please read this document in full — it explains our process **and** clarifies how code contributions relate (and do not relate) to authorship on any research papers describing this software.
+This project accompanies ongoing academic research, so this guide also explains — plainly, and up front — how contributions are credited and how that relates to authorship on any paper describing the software. The short version: contributing is welcome and always credited, and code credit and paper authorship are handled separately.
 
-## How to contribute
+## Getting started
 
-1. Open an issue first for anything beyond a trivial fix, so we can discuss the approach before you spend time on it.
-2. Fork the repo and create a branch from `main`.
-3. Make your changes, with tests where applicable.
-4. Ensure your commits are signed off (see [Developer Certificate of Origin](#developer-certificate-of-origin-dco) below).
-5. Open a pull request describing what you changed and why.
-6. A maintainer will review your PR, may request changes, and will merge it once it's ready.
+1. **Open an issue first** for anything beyond a small fix, so we can agree on the approach before you invest time. Some parts of the library are under active research and may not be open to outside contributions yet — opening an issue first means we can let you know before you start, rather than after.
+2. **Fork** the repository and create a branch from `main`.
+3. **Make your changes.** Add or update tests where it makes sense, and keep the change focused — one logical change per pull request is much easier to review than many.
+4. **Open a pull request** describing what you changed and why. Link the issue it addresses.
+5. A maintainer will review it, may suggest changes, and will merge it once it's ready. Requests for changes are a normal part of review, not a rejection.
 
-## Developer Certificate of Origin (DCO)
+## Development setup
 
-We use the [Developer Certificate of Origin](https://developercertificate.org/) instead of a Contributor License Agreement. This simply confirms you have the right to submit your contribution, and that it's licensed under this project's license (Apache License 2.0).
-
-To sign off, add `-s` when committing:
-
-```
-git commit -s -m "Your commit message"
-```
-
-This adds a line to your commit message:
-
-```
-Signed-off-by: Your Name <your.email@example.com>
+```bash
+git clone https://github.com/wizmik12/crowdGP
+cd crowdGP
+pip install -e ".[dev]"
+pytest -m "not slow"      # fast unit + smoke tests, a few seconds
+pytest                     # everything, including end-to-end training (~2 min)
 ```
 
-Pull requests with unsigned commits will not be merged until this is fixed.
+## Code guidelines
+
+A few conventions keep this codebase consistent and, more importantly, correct. The first two are not style preferences — getting them wrong produces code that runs and returns plausible numbers while being silently wrong.
+
+- **The confusion-matrix convention is load-bearing.** Confusion tensors are `[A, C_obs, C_true]`, normalised down **axis 1**, so each *column* is a distribution over observed labels given a fixed true class. Code that touches confusion matrices should include a test comparing against the transpose, not only against the expected values — a transposed convention passes most other checks.
+- **No Python loops over annotators or annotations, and no Python branching on tensor shapes**, in anything that runs inside `tf.function`. Loops unroll into one subgraph copy per iteration; shape branches work eagerly and raise in graph mode. Use `gather_nd`, `unsorted_segment_sum`, or `np.add.at`.
+- **float64 throughout.** GPflow defaults to it and the variational maths needs it; call `gpflow.config.set_default_float(np.float64)`.
+- **Docstrings** in Google style, and every tensor argument documents its shape. Scientific code is unreadable without this.
+- **Tests** should use hand-computed expected values, not values produced by running the implementation — the latter pin current behaviour rather than catching regressions. New models should be checked against `make_synthetic`, where the true labels and confusion matrices are known. Mark anything slow with `@pytest.mark.slow`.
+- **Style**: line length 100, checked with `ruff`; types checked with `mypy`. Both are configured in `pyproject.toml`.
 
 ## Code of conduct
 
-Be respectful and constructive. Disagreements about code are fine; personal attacks are not.
+Be respectful and constructive. Disagreements about code are welcome; personal attacks are not.
+
+## Licensing of contributions
+
+This project is licensed under the [Apache License 2.0](LICENSE). By opening a pull request, you agree that your contribution is provided under that same license (this is what Apache-2.0 Section 5 already states for contributions to a project carrying its notice). You retain copyright in the code you write — contributing does not transfer ownership.
 
 ---
 
-## Authorship policy (please read before contributing)
+## How contributions are credited
 
-This repository accompanies ongoing academic research. We want to be upfront and fair about how contributions are recognized, so there are no surprises later.
+We want this clear before you contribute, so nothing comes as a surprise later. There are two separate systems, and they are not the same thing.
 
-**Contributing code, documentation, bug reports, or reviews to this repository does not by itself confer authorship on any paper describing this software.**
+### Software credit — for everyone
 
-We operate two separate recognition systems:
+Every merged contribution is credited, regardless of size:
 
-### 1. Software / code credit (this repo)
+- your name in [`CONTRIBUTORS.md`](CONTRIBUTORS.md),
+- permanent attribution in the git history,
+- a mention in release notes where relevant.
 
-All contributors are credited here, regardless of the size of their contribution:
+When the software has a tagged, archived release (e.g. a Zenodo DOI), it can be cited in its own right, independently of any paper.
 
-- Listed in [`CONTRIBUTORS.md`](CONTRIBUTORS.md)
-- Listed in the `contributors` section of [`CITATION.cff`](CITATION.cff), which allows your contribution to be cited independently of any paper
-- Mentioned in release notes when relevant
-- Visible permanently in the git history
+### Paper authorship — a separate decision
 
-This is real, citable, indexable credit — many contributors prefer to cite the software directly via its own DOI (e.g., via Zenodo) rather than being listed on an unrelated paper.
+**Contributing code, docs, tests, or reviews does not by itself make you an author on a paper describing this software.** This is standard practice, not a judgement about the value of the work.
 
-### 2. Paper authorship (separate process)
+Authorship follows the [ICMJE criteria](https://www.icmje.org/recommendations/browse/roles-and-responsibilities/defining-the-role-of-authors-and-contributors.html), which require *all* of: a substantial intellectual contribution to the work; involvement in drafting or revising the manuscript; approval of the final version; and accountability for it. Code alone therefore never suffices — authorship also means engaging with the paper itself.
 
-Authorship on any manuscript describing this software is decided by the corresponding author(s)/PI, following standard [ICMJE authorship criteria](https://www.icmje.org/recommendations/browse/roles-and-responsibilities/defining-the-role-of-authors-and-contributors.html): substantial contribution to conception/design, or analysis/interpretation of data; drafting or substantively revising the manuscript; final approval; and accountability for the work.
+In practice:
 
-In practice, this generally means:
+- Bug fixes, refactoring, tests, documentation, and small features are credited as software contributions (above), and meaningful contributions are also named in the paper's **Acknowledgements**.
+- Larger contributions — designing a method the paper builds on, leading a component it evaluates, or contributing to the writing and analysis — are assessed individually.
 
-- **Usually qualifies for authorship consideration:** designing a new core algorithm/method that becomes central to the paper's contribution, leading a major feature that the paper specifically evaluates, substantial writing/analysis contributions to the manuscript itself.
-- **Usually does not, on its own:** bug fixes, refactoring, adding tests, documentation, minor features, code review, dependency updates.
+If you think your contribution is heading toward that level, **please raise it early**, while you're working on it rather than after a paper is submitted. Journal author lists are fixed at submission and awkward to change afterward, so an early conversation genuinely serves both sides. Co-authorship also carries obligations: co-authors provide an ORCID iD, review and approve the manuscript, and stay reachable through submission and revision.
 
-This list is a guideline, not an exhaustive rule — if you believe your contribution meets the bar for authorship, **please raise it with the maintainers before or while opening your PR**, not after the paper is submitted. We're happy to have that conversation early.
-
-Contributors who don't meet authorship criteria but made a meaningful contribution will typically be named in the paper's **Acknowledgments** section, which is the standard venue for this kind of recognition.
-
-Questions about this policy can be raised as a GitHub issue or directed to the maintainers listed in `CITATION.cff`.
+Questions about any of this are welcome — open an issue, or contact the maintainer listed in [`CITATION.cff`](CITATION.cff).
