@@ -20,7 +20,8 @@ Research code under active development, released alongside ongoing work from
 the authors' group. The public API (`crowdgp.*`, see [Architecture](#architecture))
 is reasonably stable, but interfaces can still change between versions ahead
 of a first tagged release -- pin a commit if you depend on it for a
-publication. Issues and pull requests are welcome. A citation entry
+publication. Issues and pull requests are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md)
+for which areas are open and how contributions are credited. A citation entry
 (BibTeX / paper reference) will be added here once the accompanying
 publication is available.
 
