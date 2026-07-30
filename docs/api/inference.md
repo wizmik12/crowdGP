@@ -1,3 +1,3 @@
 # Training
 
-::: crowdgp.inference
+::: gpcrowdkit.inference

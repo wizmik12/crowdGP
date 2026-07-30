@@ -1,7 +1,7 @@
 """Sparse containers for crowdsourced annotations.
 
 This is the foundation file of the library: every other module consumes a
-[CrowdBatch][crowdgp.data.CrowdBatch] produced here, so the guarantees this file makes are the
+[CrowdBatch][gpcrowdkit.data.CrowdBatch] produced here, so the guarantees this file makes are the
 guarantees the whole model rests on.
 
 Storage format
@@ -26,7 +26,7 @@ Batching
 --------
 The awkward part of COO is that a minibatch is defined by a set of *items*,
 but the annotations for those items are scattered through the ``L`` arrays.
-[CrowdLabels.as_ragged][crowdgp.data.CrowdLabels.as_ragged] solves this by re-expressing the annotations as
+[CrowdLabels.as_ragged][gpcrowdkit.data.CrowdLabels.as_ragged] solves this by re-expressing the annotations as
 a ``tf.RaggedTensor`` indexed by item, so that ``tf.gather`` retrieves exactly
 the annotations belonging to a batch -- with no padding, and with the
 item-to-annotation mapping recovered for free from ``value_rowids()``.
@@ -117,8 +117,8 @@ class CrowdLabels:
             Shape ``[C]``.
 
     Note:
-        Everything in this class is NumPy except [as_ragged][crowdgp.data.CrowdLabels.as_ragged] and
-        [gather_batch][crowdgp.data.CrowdLabels.gather_batch]. Preprocessing runs once, outside the training
+        Everything in this class is NumPy except [as_ragged][gpcrowdkit.data.CrowdLabels.as_ragged] and
+        [gather_batch][gpcrowdkit.data.CrowdLabels.gather_batch]. Preprocessing runs once, outside the training
         graph, so there is no reason to pay TensorFlow's overhead for it.
     """
 
@@ -297,7 +297,7 @@ class CrowdLabels:
         return self._ragged
 
     def gather_batch(self, X: tf.Tensor, item_global: tf.Tensor) -> CrowdBatch:
-        """Assembles an aligned [CrowdBatch][crowdgp.data.CrowdBatch] for the given items.
+        """Assembles an aligned [CrowdBatch][gpcrowdkit.data.CrowdBatch] for the given items.
 
         Everything in the batch derives from the single ``item_global`` vector,
         which is what makes misalignment structurally impossible rather than
@@ -331,7 +331,7 @@ class CrowdLabels:
         )
 
     def full_batch(self, X: tf.Tensor) -> CrowdBatch:
-        """Returns a [CrowdBatch][crowdgp.data.CrowdBatch] covering the entire dataset.
+        """Returns a [CrowdBatch][gpcrowdkit.data.CrowdBatch] covering the entire dataset.
 
         Args:
             X (tf.Tensor): Full feature matrix. Shape ``[N, D]``.

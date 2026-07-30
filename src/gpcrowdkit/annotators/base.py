@@ -12,14 +12,14 @@ the hypothesis that its item's true class is ``c``::
     t_{l,c} = E_{q(R)}[ log p(y_l | z_{i(l)} = c, R) ]
 
 Everything else the model needs is a fixed reduction of that tensor, and is
-implemented once in [AnnotatorModel][crowdgp.annotators.base.AnnotatorModel] rather than in every subclass:
+implemented once in [AnnotatorModel][gpcrowdkit.annotators.base.AnnotatorModel] rather than in every subclass:
 
 * summing over the annotations of each item gives the ``[B, C]`` crowdsourcing
-  evidence ([AnnotatorModel.crowd_log_per_item][crowdgp.annotators.base.AnnotatorModel.crowd_log_per_item]);
+  evidence ([AnnotatorModel.crowd_log_per_item][gpcrowdkit.annotators.base.AnnotatorModel.crowd_log_per_item]);
 * weighting that by ``q(Z)`` and summing gives the scalar ELBO term
-  ([AnnotatorModel.expected_log_likelihood][crowdgp.annotators.base.AnnotatorModel.expected_log_likelihood]);
+  ([AnnotatorModel.expected_log_likelihood][gpcrowdkit.annotators.base.AnnotatorModel.expected_log_likelihood]);
 * adding it to the latent term and taking a softmax gives the closed-form
-  update for ``q(Z)`` (see [crowdgp.posteriors][crowdgp.posteriors]).
+  update for ``q(Z)`` (see [gpcrowdkit.posteriors][gpcrowdkit.posteriors]).
 
 Choosing the scalar ``expected_log_likelihood`` as the primitive instead would
 force every subclass to repeat the aggregation, and would discard the per-item
@@ -32,7 +32,7 @@ What the contract deliberately omits
 It does not promise a confusion matrix. A one-coin annotator carries ``A``
 scalars rather than ``A * C * C`` entries, and an instance-dependent annotator
 carries none at all, computing its confusions from features on the fly. Models
-that *do* have confusion matrices inherit from [ConfusionAnnotator][crowdgp.annotators.base.ConfusionAnnotator],
+that *do* have confusion matrices inherit from [ConfusionAnnotator][gpcrowdkit.annotators.base.ConfusionAnnotator],
 which supplies the gather that maps them onto observed annotations.
 
 Two expectations, two jobs
@@ -77,7 +77,7 @@ __all__ = ["AnnotatorModel", "ConfusionAnnotator"]
 class AnnotatorModel(gpflow.Module, abc.ABC):
     """Abstract Strategy interface for crowdsourced annotator noise models.
 
-    Subclasses supply [label_log_terms][crowdgp.annotators.base.AnnotatorModel.label_log_terms] and [kl_divergence][crowdgp.annotators.base.AnnotatorModel.kl_divergence]; the
+    Subclasses supply [label_log_terms][gpcrowdkit.annotators.base.AnnotatorModel.label_log_terms] and [kl_divergence][gpcrowdkit.annotators.base.AnnotatorModel.kl_divergence]; the
     reductions built on top of them are concrete methods here.
 
     Attributes:
@@ -197,8 +197,8 @@ class AnnotatorModel(gpflow.Module, abc.ABC):
 class ConfusionAnnotator(AnnotatorModel):
     """Base class for strategies defined by per-worker confusion matrices.
 
-    Subclasses implement [expected_log_confusion][crowdgp.annotators.base.ConfusionAnnotator.expected_log_confusion] for the ELBO, and
-    [confusion_matrices][crowdgp.annotators.base.AnnotatorModel.confusion_matrices] for reporting. The gather that
+    Subclasses implement [expected_log_confusion][gpcrowdkit.annotators.base.ConfusionAnnotator.expected_log_confusion] for the ELBO, and
+    [confusion_matrices][gpcrowdkit.annotators.base.AnnotatorModel.confusion_matrices] for reporting. The gather that
     maps the log confusion tensor onto observed annotations is written once,
     here.
 
@@ -227,7 +227,7 @@ class ConfusionAnnotator(AnnotatorModel):
         """
 
     def label_log_terms(self, batch: CrowdBatch) -> tf.Tensor:
-        """See [AnnotatorModel.label_log_terms][crowdgp.annotators.base.AnnotatorModel.label_log_terms].
+        """See [AnnotatorModel.label_log_terms][gpcrowdkit.annotators.base.AnnotatorModel.label_log_terms].
 
         Selects, for each annotation, the row of the expected log confusion
         tensor corresponding to ``(the worker who gave it, the label they

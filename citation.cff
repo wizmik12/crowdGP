@@ -1,0 +1,42 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it using these metadata."
+title: "gpcrowdkit"
+abstract: >-
+  Gaussian-process models for learning from crowds: fitting a classifier from
+  noisy, incomplete crowdsourced annotations jointly with a model of each
+  annotator's reliability. The default configuration reproduces SVGPCR.
+type: software
+license: Apache-2.0
+repository-code: "https://github.com/wizmik12/gpcrowdkit"
+url: "https://github.com/wizmik12/gpcrowdkit"
+keywords:
+  - crowdsourcing
+  - learning from crowds
+  - Gaussian processes
+  - variational inference
+  - weak supervision
+authors:
+  - family-names: "REPLACE_LAST_NAME"
+    given-names: "REPLACE_FIRST_NAME"
+    orcid: "https://orcid.org/0000-0000-0000-0000"
+    affiliation: "REPLACE_WITH_INSTITUTION"
+
+# --- Add when you cut a tagged release ---
+# version: 0.1.0
+# date-released: "2026-09-15"
+
+# --- Add when the release is archived on Zenodo ---
+# doi: "10.5281/zenodo.XXXXXXX"
+
+# --- Add when the paper is published. From then on, "cite this software"
+# --- redirects to the paper. The authors here are the paper's author list,
+# --- which is separate from the software contributors above.
+# preferred-citation:
+#   type: article
+#   title: "REPLACE_WITH_PAPER_TITLE"
+#   authors:
+#     - family-names: "REPLACE_LAST_NAME"
+#       given-names: "REPLACE_FIRST_NAME"
+#   journal: "Neurocomputing"
+#   year: 2026
+#   doi: "10.XXXX/XXXXXXX"

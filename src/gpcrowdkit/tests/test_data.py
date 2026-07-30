@@ -1,5 +1,5 @@
 import numpy as np, tensorflow as tf
-from crowdgp.data import CrowdLabels
+from gpcrowdkit.data import CrowdLabels
 
 def test_alignment():
     rng = np.random.default_rng(0)

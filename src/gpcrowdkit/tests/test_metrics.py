@@ -1,7 +1,7 @@
 import pytest
 import numpy as np
 import math
-from crowdgp.metrics import (
+from gpcrowdkit.metrics import (
     label_accuracy,
     balanced_accuracy,
     confusion_error,

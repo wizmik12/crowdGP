@@ -3,7 +3,7 @@ requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "crowdgp"
+name = "gpcrowdkit"
 version = "0.1.0"
 description = "Gaussian-process models for learning from crowds"
 readme = "README.md"
@@ -40,7 +40,7 @@ docs = [
 where = ["src"]
 
 [tool.pytest.ini_options]
-testpaths = ["src/crowdgp/tests"]
+testpaths = ["src/gpcrowdkit/tests"]
 markers = [
     "slow: exercises real optimisation over many iterations (deselect with -m \"not slow\")",
 ]

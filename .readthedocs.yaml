@@ -3,7 +3,7 @@
 # The docs build only needs the mkdocs/mkdocstrings toolchain, not the
 # library's own runtime dependencies (tensorflow, gpflow): mkdocstrings'
 # python handler reads docstrings via static analysis (griffe), never by
-# importing crowdgp itself. Keeping TensorFlow off the build keeps it fast
+# importing gpcrowdkit itself. Keeping TensorFlow off the build keeps it fast
 # and inside Read the Docs' free-tier resource limits.
 version: 2
 

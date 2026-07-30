@@ -1,3 +1,3 @@
 # Data
 
-::: crowdgp.data
+::: gpcrowdkit.data

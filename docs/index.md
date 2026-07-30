@@ -1,4 +1,4 @@
-# crowdgp
+# gpcrowdkit
 
 Gaussian-process models for learning from crowds: fitting a classifier from
 noisy, incomplete crowdsourced annotations instead of clean labels, jointly
@@ -33,7 +33,7 @@ and `gpflow`.
 
 ```python
 import gpflow
-from crowdgp import (
+from gpcrowdkit import (
     FreeCategoricalZ, GPCrowdModel, SVGPLatent,
     VariationalDirichletAnnotator, init_alpha_tilde, make_synthetic, train,
 )
@@ -107,4 +107,4 @@ pytest                  # + end-to-end training tests that verify the model
                         # confusion matrices, ~2 minutes
 ```
 
-Source: [github.com/wizmik12/crowdGP](https://github.com/wizmik12/crowdGP)
+Source: [github.com/wizmik12/gpcrowdkit](https://github.com/wizmik12/gpcrowdkit)
