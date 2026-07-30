@@ -39,17 +39,19 @@ def confusion_error(estimated, true):
     Mean absolute error over [A, C_obs, C_true].
 
     Args:
-        estimated (np.ndarray): shape (n_workers, 3, 3), estimated confusion matrices.
-        true (np.ndarray): shape (n_workers, 3, 3), true confusion matrices.
+        estimated (np.ndarray): shape (n_workers, C, C), estimated confusion matrices.
+        true (np.ndarray): shape (n_workers, C, C), true confusion matrices.
 
     Returns:
         float: Mean absolute error.
 
     Raises:
-        ValueError: If inputs do not have the expected (n_workers, 3, 3) shape or shapes do not match.
+        ValueError: If inputs do not have the expected (n_workers, C, C) shape or shapes do not match.
     """
-    if estimated.ndim != 3 or estimated.shape[1:] != (3, 3) or estimated.shape != true.shape:
-        raise ValueError("Expected shape (n_workers, 3, 3) for both inputs.")
+    if (estimated.ndim != 3
+            or estimated.shape[1] != estimated.shape[2]
+            or estimated.shape != true.shape):
+        raise ValueError(f"Expected matching [A, C, C]; got {estimated.shape} and {true.shape}")
     return float(np.mean(np.abs(estimated - true)))
 
 def expected_calibration_error(probs, true, n_bins=10):

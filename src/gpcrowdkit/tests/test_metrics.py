@@ -48,6 +48,16 @@ def test_confusion_error_shape_mismatch():
     with pytest.raises(ValueError):
         confusion_error(estimated, true)
 
+def test_confusion_error_c2():
+    estimated = np.array([
+        [[1.0, 2.0], [1.0, 2.0]],
+        [[2.0, 3.0], [2.0, 3.0]],
+    ])  # shape (2, 2, 2) — binary confusion matrices
+    true = estimated + 0.5
+    result = confusion_error(estimated, true)
+    assert result == pytest.approx(0.5)
+    assert type(result) is float
+
 def test_label_accuracy_empty():
     result = label_accuracy(np.array([]), np.array([]))
     assert result == 0.0
@@ -58,7 +68,7 @@ def test_cross_entropy_empty():
     result = cross_entropy(probs, true)
     assert result == 0.0
 
-def test_expected_calibration_error_perfect():
+def test_ece_known_value():
     # 10 items, all prob=0.9 for the correct class (all correct predictions)
     # The confidence is 0.9, accuracy is 1.0
     # ECE = |1.0 - 0.9| = 0.1
@@ -66,6 +76,22 @@ def test_expected_calibration_error_perfect():
     true = np.array([1 for _ in range(10)])
     result = expected_calibration_error(probs, true, n_bins=10)
     assert result == pytest.approx(0.1)
+    assert type(result) is float
+
+def test_ece_perfectly_calibrated():
+    # Construct a genuinely calibrated case where ECE = 0.
+    # We use 10 items with 2 classes.
+    # For all items, predicted probability is [0.2, 0.8], so confidence = 0.8 for class 1.
+    # For perfect calibration, empirical accuracy in this bin must be exactly 0.8.
+    # Therefore, exactly 8 items must have true label 1 (correct prediction), 
+    # and 2 items must have true label 0 (incorrect prediction).
+    # Bin average confidence = 0.8.
+    # Bin accuracy = 8/10 = 0.8.
+    # ECE = |0.8 - 0.8| = 0.0.
+    probs = np.array([[0.2, 0.8] for _ in range(10)])
+    true = np.array([1] * 8 + [0] * 2)
+    result = expected_calibration_error(probs, true, n_bins=10)
+    assert result == pytest.approx(0.0)
     assert type(result) is float
 
 def test_cross_entropy():
