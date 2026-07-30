@@ -8,3 +8,5 @@ dist/
 venv/
 examples/output/
 site/
+__pycache__/
+*.pyc
