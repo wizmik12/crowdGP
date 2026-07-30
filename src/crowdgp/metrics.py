@@ -3,12 +3,28 @@ import numpy as np
 def label_accuracy(pred, true):
     """
     Fraction of items whose inferred label matches ground truth.
+
+    Args:
+        pred (np.ndarray): shape (n_items,), predicted labels.
+        true (np.ndarray): shape (n_items,), true labels.
+
+    Returns:
+        float: Accuracy score between 0.0 and 1.0.
     """
+    if len(pred) == 0:
+        return 0.0
     return float(np.mean(pred == true))
 
 def balanced_accuracy(pred, true):
     """
     Mean per-class recall.
+
+    Args:
+        pred (np.ndarray): shape (n_items,), predicted labels.
+        true (np.ndarray): shape (n_items,), true labels.
+
+    Returns:
+        float: Balanced accuracy score between 0.0 and 1.0.
     """
     classes = np.unique(true)
     recalls = []
@@ -21,14 +37,32 @@ def balanced_accuracy(pred, true):
 def confusion_error(estimated, true):
     """
     Mean absolute error over [A, C_obs, C_true].
+
+    Args:
+        estimated (np.ndarray): shape (n_workers, 3, 3), estimated confusion matrices.
+        true (np.ndarray): shape (n_workers, 3, 3), true confusion matrices.
+
+    Returns:
+        float: Mean absolute error.
+
+    Raises:
+        ValueError: If inputs do not have the expected (n_workers, 3, 3) shape or shapes do not match.
     """
-    if estimated.shape != (3,) or true.shape != (3,):
-        raise ValueError("Expected shape (3,) for both inputs.")
+    if estimated.ndim != 3 or estimated.shape[1:] != (3, 3) or estimated.shape != true.shape:
+        raise ValueError("Expected shape (n_workers, 3, 3) for both inputs.")
     return float(np.mean(np.abs(estimated - true)))
 
 def expected_calibration_error(probs, true, n_bins=10):
     """
     Expected Calibration Error (ECE)
+
+    Args:
+        probs (np.ndarray): shape (n_items, n_classes), predicted probabilities.
+        true (np.ndarray): shape (n_items,), true labels.
+        n_bins (int): Number of probability bins.
+
+    Returns:
+        float: ECE score between 0.0 and 1.0.
     """
     confidence = np.max(probs, axis=1)
     predicted = np.argmax(probs, axis=1)
@@ -57,7 +91,16 @@ def expected_calibration_error(probs, true, n_bins=10):
 def cross_entropy(probs, true):
     """
     Average cross-entropy loss.
+
+    Args:
+        probs (np.ndarray): shape (n_items, n_classes), predicted probabilities.
+        true (np.ndarray): shape (n_items,), true labels.
+
+    Returns:
+        float: Cross-entropy loss >= 0.0.
     """
+    if len(probs) == 0:
+        return 0.0
     probs_clipped = np.clip(probs, 1e-15, 1 - 1e-15)
     true_probs = probs_clipped[np.arange(len(true)), true]
     return float(-np.mean(np.log(true_probs)))
@@ -65,6 +108,13 @@ def cross_entropy(probs, true):
 def worker_accuracy_correlation(estimated_confusion, true_confusion):
     """
     Spearman correlation between estimated and true per-worker diagonal means.
+
+    Args:
+        estimated_confusion (np.ndarray): shape (n_workers, n_classes, n_classes), estimated confusion matrices.
+        true_confusion (np.ndarray): shape (n_workers, n_classes, n_classes), true confusion matrices.
+
+    Returns:
+        float: Spearman correlation coefficient between -1.0 and 1.0.
     """
     n_workers = estimated_confusion.shape[0]
     est_diags = np.array([np.mean(estimated_confusion[i].diagonal()) for i in range(n_workers)])

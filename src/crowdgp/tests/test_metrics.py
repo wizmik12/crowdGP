@@ -33,18 +33,30 @@ def test_balanced_accuracy():
     assert type(result) is float
 
 def test_confusion_error():
-    estimated = np.array([1.0, 2.0, 3.0])
-    true = np.array([1.5, 2.5, 3.5])
-    # MAE = (|1-1.5| + |2-2.5| + |3-3.5|) / 3 = (0.5 + 0.5 + 0.5) / 3 = 0.5
+    estimated = np.array([
+        [[1.0, 2.0, 3.0], [1.0, 2.0, 3.0], [1.0, 2.0, 3.0]],
+        [[2.0, 3.0, 4.0], [2.0, 3.0, 4.0], [2.0, 3.0, 4.0]],
+    ])  # shape (2, 3, 3)
+    true = estimated + 0.5  # every element off by 0.5
     result = confusion_error(estimated, true)
     assert result == pytest.approx(0.5)
     assert type(result) is float
 
 def test_confusion_error_shape_mismatch():
-    estimated = np.array([1.0, 2.0])
-    true = np.array([1.5, 2.5, 3.5])
-    with pytest.raises(ValueError, match="Expected shape \\(3,\\) for both inputs."):
+    estimated = np.zeros((2, 3, 3))
+    true = np.zeros((3, 3, 2))  # wrong/transposed shape
+    with pytest.raises(ValueError):
         confusion_error(estimated, true)
+
+def test_label_accuracy_empty():
+    result = label_accuracy(np.array([]), np.array([]))
+    assert result == 0.0
+
+def test_cross_entropy_empty():
+    probs = np.array([]).reshape(0, 2)
+    true = np.array([])
+    result = cross_entropy(probs, true)
+    assert result == 0.0
 
 def test_expected_calibration_error_perfect():
     # 10 items, all prob=0.9 for the correct class (all correct predictions)
