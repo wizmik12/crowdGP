@@ -14,4 +14,5 @@ this relates to paper authorship.
      Format: - [Name](https://github.com/handle) — what they contributed
      Use the name and profile they contribute under; ask if unsure. -->
 
-- _(none yet)_
+- [Ansh Manwani](https://github.com/AnshManwani)
+      - Add metrics module (issue #1).
