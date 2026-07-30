@@ -15,4 +15,4 @@ this relates to paper authorship.
      Use the name and profile they contribute under; ask if unsure. -->
 
 - [Ansh Manwani](https://github.com/AnshManwani)
-      - Add metrics module (issue #1).
+      - Added metrics module (issue #1).
